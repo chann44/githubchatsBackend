@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@railway/cli": "^1.8.3",
     "@types/body-parser": "^1.19.2",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.12",
@@ -58,8 +59,10 @@
     "on-finished": "^2.4.1",
     "parseurl": "^1.3.3",
     "path-to-regexp": "^0.1.7",
+    "prisma": "^4.0.0",
     "proxy-addr": "^2.0.7",
     "qs": "^6.10.3",
+    "railway": "^2.0.17",
     "range-parser": "^1.2.1",
     "raw-body": "^2.5.1",
     "safe-buffer": "^5.2.1",

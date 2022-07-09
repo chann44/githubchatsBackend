@@ -33,7 +33,6 @@ io.on("connection", (socket) => {
     console.log(reason);
   });
 });
-
 app.get("/api/me", (req: Request, res: Response) => {
   const cookie = get(req, `cookies[${COOKIE_NAME}]`);
 

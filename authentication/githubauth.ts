@@ -74,21 +74,15 @@ async function getGitHubUser({ code }: { code: string }): Promise<GitHubUser> {
 router.get("/github", async (req: Request, res: Response) => {
   const code = get(req, "query.code");
   const path = get(req, "query.path", "/");
-
   console.log(path);
-
   if (!code) {
     throw new Error("No code!");
   }
-
   const gitHubUser = await getGitHubUser({ code });
-
   const token = jwt.sign(gitHubUser, secret);
-
   res.cookie(COOKIE_NAME, token, {
     httpOnly: true,
   });
-
   res.redirect(`http://localhost:3000${path}`);
 });
 
