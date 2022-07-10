@@ -14,11 +14,18 @@ const app = express();
 
 const server = http.createServer(app);
 
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhsot:3000",
   },
 });
+
+
+io.use((socket, next) => {
+    
+
+})
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
