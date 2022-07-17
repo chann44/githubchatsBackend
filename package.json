@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@prisma/client": "4.0.0",
     "@railway/cli": "^1.8.3",
     "@types/body-parser": "^1.19.2",
     "@types/cookie-parser": "^1.4.3",
@@ -80,9 +81,10 @@
     "vary": "^1.1.2"
   },
   "devDependencies": {
-    "@types/node": "^18.0.1",
-    "nodemon": "^2.0.18",
-    "ts-node": "^10.8.2",
+    "@types/node": "^18.0.5",
+    "nodemon": "^2.0.19",
+    "prisma-client": "^0.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
   },
   "scripts": {

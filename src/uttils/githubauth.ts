@@ -7,8 +7,7 @@ const GITHUB_CLIENT_ID = "5caf3cf55e98184c29f8";
 const GITHUB_CLIENT_SECRET = "8bbaa1c441083315f4bb5d2ff58d4f6f0c423699";
 import axios from "axios";
 import querystring from "querystring";
-
-const COOKIE_NAME = "github-jwt";
+import { prisma } from "..//src/prisma";
 
 export interface GitHubUser {
   login: string;
@@ -45,8 +44,10 @@ export interface GitHubUser {
   updated_at: Date;
 }
 
+let githubToken: string = "";
+
 async function getGitHubUser({ code }: { code: string }): Promise<GitHubUser> {
-  const githubToken = await axios
+  githubToken = await axios
     .post(
       `https://github.com/login/oauth/access_token?client_id=${GITHUB_CLIENT_ID}&client_secret=${GITHUB_CLIENT_SECRET}&code=${code}`
     )
@@ -80,8 +81,20 @@ router.get("/github", async (req: Request, res: Response) => {
   }
   const gitHubUser = await getGitHubUser({ code });
   const token = jwt.sign(gitHubUser, secret);
-  res.cookie(COOKIE_NAME, token, {
-    httpOnly: true,
+
+  prisma.user.create({
+    data: {
+      username: gitHubUser.name,
+      avtar: gitHubUser.avatar_url,
+      followers: gitHubUser.followers,
+      folllwoing: gitHubUser.following,
+      githuburl: gitHubUser.url,
+      Repos: gitHubUser.public_repos,
+      githubtoken: githubToken,
+    },
+  });
+  res.json({
+    token: token,
   });
   res.redirect(`http://localhost:3000${path}`);
 });
