@@ -1,13 +1,15 @@
 import { Router, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-const secret = "sssss";
 const router = Router();
+import { config } from "../config";
 import { get } from "lodash";
 const GITHUB_CLIENT_ID = "5caf3cf55e98184c29f8";
 const GITHUB_CLIENT_SECRET = "8bbaa1c441083315f4bb5d2ff58d4f6f0c423699";
 import axios from "axios";
 import querystring from "querystring";
-import { prisma } from "..//src/prisma";
+import { prisma } from "./prisma";
+
+let token: string = "";
 
 export interface GitHubUser {
   login: string;
@@ -80,23 +82,32 @@ router.get("/github", async (req: Request, res: Response) => {
     throw new Error("No code!");
   }
   const gitHubUser = await getGitHubUser({ code });
-  const token = jwt.sign(gitHubUser, secret);
 
-  prisma.user.create({
-    data: {
+  const userexist = await prisma.user.findUnique({
+    where: {
       username: gitHubUser.name,
-      avtar: gitHubUser.avatar_url,
-      followers: gitHubUser.followers,
-      folllwoing: gitHubUser.following,
-      githuburl: gitHubUser.url,
-      Repos: gitHubUser.public_repos,
-      githubtoken: githubToken,
     },
   });
-  res.json({
-    token: token,
-  });
-  res.redirect(`http://localhost:3000${path}`);
+
+  if (userexist) {
+    token = jwt.sign({ userexist }, config.secrete);
+    console.log("user exists");
+  } else {
+    const user = await prisma.user.create({
+      data: {
+        username: gitHubUser.name,
+        avtar: gitHubUser.avatar_url,
+        followers: gitHubUser.followers,
+        folllwoing: gitHubUser.following,
+        githuburl: gitHubUser.url,
+        Repos: gitHubUser.public_repos,
+        githubtoken: githubToken,
+      },
+    });
+    token = jwt.sign({ user }, config.secrete);
+  }
+
+  res.redirect(`http://localhost:3000?token=${token}`);
 });
 
 export default router;
