@@ -82,6 +82,10 @@
   },
   "devDependencies": {
     "@types/node": "^18.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
+    "eslint": ">=5.16.0",
+    "eslint-config-google": "^0.14.0",
     "nodemon": "^2.0.19",
     "prisma-client": "^0.0.0",
     "ts-node": "^10.9.1",
@@ -89,7 +93,12 @@
   },
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format:check": 
+   "prettier --check .",
+   "format:write": "prettier --write .",
+   "lint:check": "eslint .",
+   "lint:fix": "eslint --fix ."
   },
   "keywords": [],
   "author": "",

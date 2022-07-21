@@ -1,16 +1,16 @@
-import { Router } from "express";
-import { Response } from "express";
-import { authenticateJWT } from "../middleware/jwt";
+import { Router } from 'express'
+import { Response } from 'express'
+import { authenticateJWT } from '../middleware/jwt'
 
-const router = Router();
+// eslint-disable-next-line new-cap
+const router = Router()
 
-router.get("/", authenticateJWT, (req: any, res: Response) => {
-  const user = req.user;
-  console.log(user);
-  console.log(user);
-  res.json({
-    user,
-  });
-});
+router.get('/', authenticateJWT, (req: any, res: Response) => {
+    const user = req.user
+    console.log(user)
+    res.json({
+        user,
+    })
+})
 
-export default router;
+export default router
