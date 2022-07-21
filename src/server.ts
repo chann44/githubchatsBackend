@@ -7,6 +7,7 @@ import authRouter from './uttils/githubauth'
 import userRouter from '../src/routes/user'
 import { Server } from 'socket.io'
 import chat from './controllers/chat'
+import search from './routes/search'
 const app = express()
 const server = http.createServer(app)
 
@@ -25,5 +26,6 @@ chat(io)
 
 app.use('/api/auth', authRouter)
 app.use('/api/me', userRouter)
+app.use('/api/search', search)
 
 export default server

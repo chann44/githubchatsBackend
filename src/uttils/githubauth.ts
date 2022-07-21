@@ -85,7 +85,7 @@ router.get('/github', async (req: Request, res: Response) => {
 
     user = await prisma.user.findUnique({
         where: {
-            username: gitHubUser.name,
+            username: gitHubUser.login,
         },
     })
     if (user) {
@@ -94,7 +94,7 @@ router.get('/github', async (req: Request, res: Response) => {
     } else {
         user = await prisma.user.create({
             data: {
-                username: gitHubUser.name,
+                username: gitHubUser.login,
                 avtar: gitHubUser.avatar_url,
                 followers: gitHubUser.followers,
                 folllwoing: gitHubUser.following,
@@ -103,6 +103,7 @@ router.get('/github', async (req: Request, res: Response) => {
                 githubtoken: githubToken,
             },
         })
+        console.log(gitHubUser.login)
         token = jwt.sign({ user }, config.secrete)
     }
 
