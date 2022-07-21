@@ -5,20 +5,23 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import authRouter from './uttils/githubauth'
 import userRouter from '../src/routes/user'
-import { prisma } from './uttils/prisma'
+import { Server } from 'socket.io'
+import chat from './controllers/chat'
 const app = express()
 const server = http.createServer(app)
+
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+    },
+})
 
 app.use(cors({ origin: true, credentials: true }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
-const findall = async () => {
-    const users = await prisma.user.findMany()
-    console.log(users)
-}
-
-findall()
+chat(io)
 
 app.use('/api/auth', authRouter)
 app.use('/api/me', userRouter)
